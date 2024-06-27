@@ -32,9 +32,7 @@ public class LeagueResponseDto {
     private String leagueRules;
     private String frequency;
     private String seasonType;
-
     private List<Content> contents;
-
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

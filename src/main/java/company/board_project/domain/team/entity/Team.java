@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,4 +118,40 @@ public class Team extends Auditable {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Team{" +
+                "teamId=" + teamId +
+                ", championCount=" + championCount +
+                ", memberCount=" + memberCount +
+                ", leagueMatchCount=" + leagueMatchCount +
+                ", leagueMatchPoints=" + leagueMatchPoints +
+                ", leagueWinRecord=" + leagueWinRecord +
+                ", leagueDrawRecord=" + leagueDrawRecord +
+                ", leagueLoseRecord=" + leagueLoseRecord +
+                ", totalMatchCount=" + totalMatchCount +
+                ", totalWinRecord=" + totalWinRecord +
+                ", totalDrawRecord=" + totalDrawRecord +
+                ", totalLoseRecord=" + totalLoseRecord +
+                ", honorScore=" + honorScore +
+                ", teamGoals=" + teamGoals +
+                ", teamAssist=" + teamAssist +
+                ", teamName='" + teamName + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", managerName='" + managerName + '\'' +
+                ", leagueName='" + leagueName + '\'' +
+                ", subManagerName='" + subManagerName + '\'' +
+                ", ageType=" + ageType +
+                ", sportsType=" + sportsType +
+                ", levelType=" + levelType +
+                ", locationType=" + locationType +
+                ", frequency=" + frequency +
+                ", uniformType=" + uniformType +
+                ", formation=" + formation +
+                ", leagues=" + leagues +
+                ", applies=" + applies +
+                ", matches=" + matches +
+                ", user=" + user +
+                '}';
+    }
 }
