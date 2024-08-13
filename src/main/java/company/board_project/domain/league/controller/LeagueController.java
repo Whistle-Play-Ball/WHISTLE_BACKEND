@@ -1,5 +1,6 @@
 package company.board_project.domain.league.controller;
 
+import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.domain.league.dto.LeaguePatchDto;
 import company.board_project.domain.league.dto.LeaguePostDto;
 import company.board_project.domain.league.dto.LeagueResponseDto;
@@ -33,9 +34,9 @@ public class LeagueController {
      */
     @PostMapping
     @Transactional
-    public ResponseEntity postLeague(@RequestBody LeaguePostDto requestBody){
+    public ResponseEntity postLeague(@RequestBody LeaguePostDto requestBody, @AuthenticatedUser String email){
 
-        League league = leagueService.createLeague(leagueMapper.leaguePostDtoToLeague(requestBody), requestBody.getUserId(), requestBody.getTeamId());
+        League league = leagueService.createLeague(leagueMapper.leaguePostDtoToLeague(requestBody), email, requestBody.getTeamId());
         LeagueResponseDto leagueResponseDto = leagueMapper.leagueToLeagueResponse(league);
 
         // 리그 리스트 생성

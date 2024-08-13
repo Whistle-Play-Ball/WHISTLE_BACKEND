@@ -69,6 +69,13 @@ public class UserService {
     public User findUser(Long userId) {
         return existUser(userId);
     }
+    public User findUserByEmail(String email) {
+        return verifiedUserByEmail(email);
+    }
+
+    public User verifiedUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(Exceptions.USER_NOT_FOUND));
+    }
 
     // 회원 전체 조회
     public List<User> findAllUser() {

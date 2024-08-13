@@ -30,8 +30,8 @@ public class MatchService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
 
-    public Match createMatch(Match match, Long userId, Long teamId) {
-        User user = userService.findUser(userId);
+    public Match createMatch(Match match, String email, Long teamId) {
+        User user = userService.findUserByEmail(email);
         Team team = teamService.findTeam(teamId);
 
         match.setUser(user);
@@ -54,8 +54,8 @@ public class MatchService {
         return match;
     }
 
-    public Match createTournamentMatch(Match match, Long userId, Long teamId) {
-        User user = userService.findUser(userId);
+    public Match createTournamentMatch(Match match, String email, Long teamId) {
+        User user = userService.findUserByEmail(email);
         Team team = teamService.findTeam(teamId);
 
         findVerifiedExistsLeagueByTeamId(teamId);

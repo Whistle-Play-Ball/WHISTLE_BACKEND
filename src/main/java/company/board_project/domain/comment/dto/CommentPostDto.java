@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class CommentPostDto {
-    private long userId;
     private long contentId;
     @NotBlank(message = "댓글의 내용을 입력해야 합니다.")
     private String comment;

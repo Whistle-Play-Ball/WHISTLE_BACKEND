@@ -63,7 +63,7 @@ public interface ContentMapper {
                 .build();
     }
 
-//    List<ContentResponseDto> contentsToContentsResponse(List<Content> contents, ContentFileRepository contentFileRepository);
+//  List<ContentResponseDto> contentsToContentsResponse(List<Content> contents, ContentFileRepository contentFileRepository);
     default List<ContentResponseDto> contentsToContentsResponse(List<Content> contents, ContentFileRepository contentFileRepository){
         return contents.stream()
                 .map(content -> ContentResponseDto.builder()

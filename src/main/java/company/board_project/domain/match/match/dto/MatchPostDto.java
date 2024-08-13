@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class MatchPostDto {
-    private Long userId;
     private Long teamId;
     @NotBlank(message = "지역을 입력 해야 합니다.")
     private String locationType;

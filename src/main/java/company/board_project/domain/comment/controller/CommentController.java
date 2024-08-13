@@ -1,5 +1,6 @@
 package company.board_project.domain.comment.controller;
 
+import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.domain.comment.dto.CommentPatchDto;
 import company.board_project.domain.comment.dto.CommentPostDto;
 import company.board_project.domain.comment.dto.CommentResponseDto;
@@ -27,15 +28,16 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
+
     /*
      * 댓글 생성
      */
     @PostMapping
-    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto requestBody ){
+    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto requestBody, @AuthenticatedUser String email) {
         Comment comment = commentService.createComment(
                 commentMapper.commentPostDtoToComment(requestBody),
                 requestBody.getContentId(),
-                requestBody.getUserId()
+                email
         );
         CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
 
@@ -47,7 +49,7 @@ public class CommentController {
      */
     @PatchMapping("/{commentId}")
     public ResponseEntity patchComment(@Valid @RequestBody CommentPatchDto requestBody,
-                                       @PathVariable("commentId") @Positive Long commentId){
+                                       @PathVariable("commentId") @Positive Long commentId) {
         Comment comment = commentService.updateComment(
                 commentMapper.commentPatchDtoToComment(requestBody),
                 commentId);
@@ -62,7 +64,7 @@ public class CommentController {
      * 댓글 단건 조회
      */
     @GetMapping("/{commentId}")
-    public ResponseEntity getComment(@PathVariable("commentId") @Positive Long commentId){
+    public ResponseEntity getComment(@PathVariable("commentId") @Positive Long commentId) {
         Comment comment = commentService.findComment(commentId);
         CommentResponseDto commentResponse = commentMapper.commentToCommentResponseDto(comment);
 
@@ -93,7 +95,7 @@ public class CommentController {
                         pageComments),
                 HttpStatus.OK);
     }
-    
+
     /*
      * 댓글 삭제
      */

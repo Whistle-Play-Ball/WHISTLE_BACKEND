@@ -1,5 +1,6 @@
 package company.board_project.domain.content.controller;
 
+import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.domain.content.dto.*;
 import company.board_project.domain.content.entity.Content;
 import company.board_project.domain.content.mapper.ContentMapper;
@@ -40,9 +41,9 @@ public class ContentController {
      * 게시글 생성
      */
     @PostMapping
-    public ResponseEntity postContent(@Validated @RequestBody ContentPostDto requestBody) {
+    public ResponseEntity postContent(@Validated @RequestBody ContentPostDto requestBody, @AuthenticatedUser String email) {
 
-        Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody), requestBody.getUserId());
+        Content content = contentService.createContent(contentMapper.contentPostDtoToContent(requestBody), email);
         ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content, contentFileRepository);
 
         return ResponseEntity.ok(contentResponse);

@@ -33,11 +33,11 @@ public class TeamService {
     private final UserService userService;
 
     public Team createTeamAndTeamMemberList(
-            Team team, Long userId) {
+            Team team, String email) {
 
-        findVerifiedExistsTeamByUserId(userId);
+        userService.verifiedUserByEmail(email);
 
-        User user = userService.findUser(userId);
+        User user = userService.findUserByEmail(email);
 
         user.setTeamMemberRole(TeamMemberRole.MANAGER);
         team.setUser(user);

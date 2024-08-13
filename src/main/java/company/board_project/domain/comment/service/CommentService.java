@@ -33,10 +33,10 @@ public class CommentService {
     public Comment createComment(
             Comment comment,
             Long contentId,
-            Long userId) {
+            String email) {
 
         Content content = contentService.findContent(contentId);
-        User user = userService.findUser(userId);
+        User user = userService.findUserByEmail(email);
 
         comment.setUser(user);
         comment.setContent(content);
@@ -47,10 +47,7 @@ public class CommentService {
     /*
      * 댓글 수정
      */
-    public Comment updateComment(
-            Comment comment,
-            Long commentId) {
-
+    public Comment updateComment(Comment comment, Long commentId) {
 
         Comment findComment = findVerifiedComment(commentId); //ID로 멤버 존재 확인하고 comment 정보 반환
 

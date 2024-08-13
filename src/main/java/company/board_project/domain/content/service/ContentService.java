@@ -32,12 +32,11 @@ public class ContentService {
     /*
      * 게시글 생성
      */
-    public Content createContent(Content content, Long userId) {
-        User user = userService.findUser(userId);
+    public Content createContent(Content content, String email) {
+        User user = userService.findUserByEmail(email);
 
         content.setUser(user);
         contentRepository.save(content);
-
 
         return content;
     }

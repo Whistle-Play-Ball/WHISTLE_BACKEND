@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class TeamPostDto {
-    private long userId;
-
     @NotBlank(message = "팀 이름을 입력 해야 합니다.")
     private String teamName;
     private String introduction;

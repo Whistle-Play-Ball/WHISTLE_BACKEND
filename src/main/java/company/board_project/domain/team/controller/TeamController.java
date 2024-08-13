@@ -1,5 +1,6 @@
 package company.board_project.domain.team.controller;
 
+import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.domain.team.dto.*;
 import company.board_project.domain.team.entity.TeamMemberList;
 import company.board_project.response.MultiResponseDto;
@@ -30,12 +31,13 @@ public class TeamController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity postTeam(@Valid @RequestBody TeamPostDto requestBody) {
-        Team team = teamService.createTeamAndTeamMemberList(teamMapper.teamPostDtoToTeam(requestBody), requestBody.getUserId());
+    public ResponseEntity postTeam(@Valid @RequestBody TeamPostDto requestBody, @AuthenticatedUser String email) {
+        log.info("email : {}", email);
+        Team team = teamService.createTeamAndTeamMemberList(teamMapper.teamPostDtoToTeam(requestBody), email);
         TeamResponseDto teamResponseDto = teamMapper.teamToTeamResponseDto(team);
         log.info("teamResponseDto.getTeamId() : {}", teamResponseDto.getTeamId());
         log.info("teamResponseDto.getUserId() : {}", teamResponseDto.getUserId());
-        log.info("requestBody.getUserId() : {}", requestBody.getUserId());
+        log.info("email : {}", email);
 
         TeamMemberListPostDto teamMemberListPostDto = new TeamMemberListPostDto();
         teamMemberListPostDto.setName(teamResponseDto.getManagerName());

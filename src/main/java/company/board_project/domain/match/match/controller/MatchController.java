@@ -1,5 +1,6 @@
 package company.board_project.domain.match.match.controller;
 
+import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.constant.MatchType;
 import company.board_project.domain.match.match.dto.MatchListDto;
 import company.board_project.domain.match.match.dto.MatchPatchDto;
@@ -30,14 +31,14 @@ public class MatchController {
     private final MatchMapper matchMapper;
 
     @PostMapping
-    public ResponseEntity postMatch(@Validated @RequestBody MatchPostDto requestBody) {
+    public ResponseEntity postMatch(@Validated @RequestBody MatchPostDto requestBody, @AuthenticatedUser String email) {
 
         if (requestBody.getMatchType().equals(String.valueOf(MatchType.NORMAL_MATCH))) {
-            Match match = matchService.createMatch(matchMapper.matchPostDtoToMatch(requestBody), requestBody.getUserId(), requestBody.getTeamId());
+            Match match = matchService.createMatch(matchMapper.matchPostDtoToMatch(requestBody), email, requestBody.getTeamId());
             MatchResponseDto matchResponseDto = matchMapper.matchToMatchResponse(match);
             return ResponseEntity.ok(matchResponseDto);
         } else {
-            Match match = matchService.createTournamentMatch(matchMapper.matchPostDtoToMatch(requestBody), requestBody.getUserId(), requestBody.getTeamId());
+            Match match = matchService.createTournamentMatch(matchMapper.matchPostDtoToMatch(requestBody), email, requestBody.getTeamId());
             MatchResponseDto matchResponseDto = matchMapper.matchToMatchResponse(match);
             return ResponseEntity.ok(matchResponseDto);
         }

@@ -40,8 +40,8 @@ public class LeagueService {
     /*
     * 리그 생성
     */
-    public League createLeague(League league, Long userId, Long teamId) {
-        User user = userService.findUser(userId);
+    public League createLeague(League league, String email, Long teamId) {
+        User user = userService.findUserByEmail(email);
         Team team = teamService.findTeam(teamId);
 
         findVerifiedExistsLeagueByTeamId(team.getTeamId());

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class LeaguePostDto {
-    private long userId;
     private long teamId;
     private int memberCount;
     private int matchCount;
