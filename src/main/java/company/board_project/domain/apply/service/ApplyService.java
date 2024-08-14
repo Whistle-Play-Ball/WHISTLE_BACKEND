@@ -56,12 +56,12 @@ public class ApplyService {
     /*
      * TeamApply 생성
      */
-    public Apply createTeamApply(Apply apply, long userId, long teamId) {
+    public Apply createTeamApply(Apply apply, String email, Long teamId) {
         int age =0;
         log.info("CREATE TEAM APPLY START[{}]", apply);
 
         log.info("apply[{}]", apply);
-        User user = userService.findUser(userId);
+        User user = userService.findUserByEmail(email);
         Team team = teamService.findTeam(teamId);
 
         apply.setApplierName(user.getName());
@@ -78,10 +78,10 @@ public class ApplyService {
      * MatchApply 생성
      * user, team, match가 존재하는지 확인 후 team, user, match가 존재하면 applyRepository에 저장
      */
-    public Apply createMatchApply(Apply apply, Long userId, Long matchId, Long teamId) {
+    public Apply createMatchApply(Apply apply, String email, Long matchId, Long teamId) {
         log.info("CREATE MATCH APPLY START[{}]", apply);
 
-        User user = userService.findUser(userId);
+        User user = userService.findUserByEmail(email);
         Match match = matchService.findMatch(matchId);
         Team team = teamService.findTeam(teamId);
 
@@ -103,10 +103,10 @@ public class ApplyService {
      * LeagueApply 생성
      * user, team, league가 존재하는지 확인 후 team, user, league가 존재하면 applyRepository에 저장
      */
-    public Apply createLeagueApply(Apply apply, Long userId, Long leagueId, Long teamId) {
+    public Apply createLeagueApply(Apply apply, String email, Long leagueId, Long teamId) {
         log.info("CREATE LEAGUE APPLY START[{}]", apply);
 
-        User user = userService.findUser(userId);
+        User user = userService.findUserByEmail(email);
         League league = leagueService.findLeague(leagueId);
         Team team = teamService.findTeam(teamId);
 

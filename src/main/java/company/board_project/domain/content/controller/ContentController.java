@@ -54,7 +54,8 @@ public class ContentController {
      */
     @PostMapping("/file")
     public ResponseEntity postContentFile(@RequestPart("data") ContentPostDto requestBody,
-                                      @RequestPart(required=false, value="ContentFileUrl") List<MultipartFile> multipartFiles ) {
+                                      @RequestPart(required=false, value="ContentFileUrl") List<MultipartFile> multipartFiles,
+                                          @AuthenticatedUser String email) {
 
         if (multipartFiles == null) {
             throw new BusinessLogicException(Exceptions.CONTENT_FILE_NOT_FOUND);
@@ -63,7 +64,7 @@ public class ContentController {
         List<String> filePaths = awsS3Service.uploadFile(multipartFiles);
         log.info("IMG 경로들 : "+ filePaths);
 
-        Content content = contentService.createContentFile(contentMapper.contentPostDtoToContent(requestBody), requestBody.getUserId(), filePaths);
+        Content content = contentService.createContentFile(contentMapper.contentPostDtoToContent(requestBody), email, filePaths);
         ContentResponseDto contentResponse = contentMapper.contentToContentResponse(content, contentFileRepository);
 
         return ResponseEntity.ok(contentResponse);

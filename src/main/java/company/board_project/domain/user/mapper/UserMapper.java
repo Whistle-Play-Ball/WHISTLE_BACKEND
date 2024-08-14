@@ -16,22 +16,7 @@ public interface UserMapper {
     User userPatchDtoToUser(UserPatchDto requestBody);
 
     // 회원 단건 조회
-    default UserResponseDto userToUserResponseDto(User user) {
-        return UserResponseDto.builder()
-                .userId(user.getUserId())
-                .teamId(user.getTeamId())
-                .leagueId(user.getLeagueId())
-                .matchId(user.getMatchId())
-                .loginId(user.getLoginId())
-                .email(user.getEmail())
-                .name(user.getName())
-                .password(user.getPassword())
-                .phone(user.getPhone())
-                .position(String.valueOf(user.getPosition()))
-                .createdAt(user.getCreatedAt())
-                .modifiedAt(user.getModifiedAt())
-                .build();
-    }
+    UserResponseDto userToUserResponseDto(User user);
 
     // 회원 전체 List
     default UserListDto usersToUserListResponse(List<User> userList) {

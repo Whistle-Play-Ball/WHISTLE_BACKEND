@@ -47,7 +47,7 @@ public class LeagueParticipantsList {
     private Integer leagueMatchCount = 0;
 
     @Column
-    private Integer leagueMatchPoIntegers = 0;
+    private Integer leaguePoints = 0;
 
     @Column
     private Integer leagueWinRecord = 0;
@@ -66,13 +66,6 @@ public class LeagueParticipantsList {
 
     @Column
     private Integer cleanSheet = 0;
-
-    /*@Column
-    private Integer mostGoals;
-    @Column
-    private Integer mostAssists;
-    @Column
-    private Integer mostMoMs;*/
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "USER_ID")
@@ -103,7 +96,7 @@ public class LeagueParticipantsList {
                 ", frequency=" + frequency +
                 ", uniformType=" + uniformType +
                 ", leagueMatchCount=" + leagueMatchCount +
-                ", leagueMatchPoIntegers=" + leagueMatchPoIntegers +
+                ", leaguePoints=" + leaguePoints +
                 ", leagueWinRecord=" + leagueWinRecord +
                 ", leagueDrawRecord=" + leagueDrawRecord +
                 ", leagueLoseRecord=" + leagueLoseRecord +

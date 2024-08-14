@@ -44,8 +44,8 @@ public class ContentService {
     /*
      * 게시글 파일 업로드
      */
-    public Content createContentFile(Content content, Long userId,List<String> filePaths) {
-        User user = userService.findUser(userId);
+    public Content createContentFile(Content content, String email,List<String> filePaths) {
+        User user = userService.findUserByEmail(email);
 
         content.setUser(user);
 
