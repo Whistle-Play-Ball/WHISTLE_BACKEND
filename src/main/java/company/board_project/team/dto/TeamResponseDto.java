@@ -45,4 +45,41 @@ public class TeamResponseDto {
     private LocalDateTime modifiedAt;
 
     private List<Apply> applies;
+
+    @Override
+    public String toString() {
+        return "TeamResponseDto{" +
+                "teamId=" + teamId +
+                ", userId=" + userId +
+                ", championCount=" + championCount +
+                ", memberCount=" + memberCount +
+                ", leagueMatchPoints=" + leagueMatchPoints +
+                ", leagueMatchCount=" + leagueMatchCount +
+                ", leagueWinRecord=" + leagueWinRecord +
+                ", leagueDrawRecord=" + leagueDrawRecord +
+                ", leagueLoseRecord=" + leagueLoseRecord +
+                ", totalMatchCount=" + totalMatchCount +
+                ", totalWinRecord=" + totalWinRecord +
+                ", totalDrawRecord=" + totalDrawRecord +
+                ", totalLoseRecord=" + totalLoseRecord +
+                ", honorScore=" + honorScore +
+                ", mostGoals=" + mostGoals +
+                ", mostAssist=" + mostAssist +
+                ", formation='" + formation + '\'' +
+                ", teamName='" + teamName + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", ageType='" + ageType + '\'' +
+                ", locationType='" + locationType + '\'' +
+                ", sportsType='" + sportsType + '\'' +
+                ", levelType='" + levelType + '\'' +
+                ", managerName='" + managerName + '\'' +
+                ", subManagerName='" + subManagerName + '\'' +
+                ", frequency='" + frequency + '\'' +
+                ", uniformType='" + uniformType + '\'' +
+                ", leagueName='" + leagueName + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                ", applies=" + applies +
+                '}';
+    }
 }

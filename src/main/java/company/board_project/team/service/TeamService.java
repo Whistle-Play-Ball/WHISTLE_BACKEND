@@ -61,13 +61,16 @@ public class TeamService {
 
     public void createTeamMemberList(
             TeamMemberList teamMemberList, long userId, long teamId) {
-        log.info("teamMemberList SERVICE [{}]", teamMemberList.toString());
         User user = userService.findUser(userId);
         Team team = findTeam(teamId);
 
-        teamMemberList.setUser(user);
-        teamMemberList.setTeam(team);
-
+        try {
+            teamMemberList.setUser(user);
+            teamMemberList.setTeam(team);
+            log.info("teamMemberList SERVICE [{}]", teamMemberList.toString());
+        } catch (Exception e) {
+            throw new BusinessLogicException(Exceptions.QUERY_ERROR);
+        }
         teamMemberListRepository.save(teamMemberList);
     }
 

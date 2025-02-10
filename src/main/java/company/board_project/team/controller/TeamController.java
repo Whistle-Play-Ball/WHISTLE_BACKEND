@@ -34,15 +34,14 @@ public class TeamController {
         log.info("email : {}", email);
         Team team = teamService.createTeam(teamMapper.teamPostDtoToTeam(requestBody), email);
         TeamResponseDto teamResponseDto = teamMapper.teamToTeamResponseDto(team);
-        log.info("teamResponseDto.getTeamId() : {}", teamResponseDto.getTeamId());
-        log.info("teamResponseDto.getUserId() : {}", teamResponseDto.getUserId());
+        log.info("teamResponseDto : {}", teamResponseDto.toString());
         log.info("email : {}", email);
 
         TeamMemberListPostDto teamMemberListPostDto = new TeamMemberListPostDto();
         teamMemberListPostDto.setName(teamResponseDto.getManagerName());
         teamMemberListPostDto.setTeamMemberRole("MANAGER");
-        log.info("teamMemberListPostDto[{}]", teamMemberListPostDto.toString());
         teamService.createTeamMemberList(teamMapper.teamMemberListPostDtoToTeam(teamMemberListPostDto),teamResponseDto.getUserId(),teamResponseDto.getTeamId());
+        log.info("teamMemberListPostDto[{}]", teamMemberListPostDto.toString());
 
         return ResponseEntity.ok(teamResponseDto);
     }

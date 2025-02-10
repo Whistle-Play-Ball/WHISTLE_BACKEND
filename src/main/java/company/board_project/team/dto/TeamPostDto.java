@@ -43,4 +43,36 @@ public class TeamPostDto {
     private int mostAssist = 0;
     private int mostMom = 0;
 
+    @Override
+    public String toString() {
+        return "TeamPostDto{" +
+                "teamName='" + teamName + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", ageType='" + ageType + '\'' +
+                ", locationType='" + locationType + '\'' +
+                ", sportsType='" + sportsType + '\'' +
+                ", levelType='" + levelType + '\'' +
+                ", frequency='" + frequency + '\'' +
+                ", managerName='" + managerName + '\'' +
+                ", subManagerName='" + subManagerName + '\'' +
+                ", uniformType='" + uniformType + '\'' +
+                ", leagueName='" + leagueName + '\'' +
+                ", formation='" + formation + '\'' +
+                ", championCount=" + championCount +
+                ", memberCount=" + memberCount +
+                ", leagueMatchPoints=" + leagueMatchPoints +
+                ", leagueMatchCount=" + leagueMatchCount +
+                ", leagueWinRecord=" + leagueWinRecord +
+                ", leagueDrawRecord=" + leagueDrawRecord +
+                ", leagueLoseRecord=" + leagueLoseRecord +
+                ", totalMatchCount=" + totalMatchCount +
+                ", totalWinRecord=" + totalWinRecord +
+                ", totalDrawRecord=" + totalDrawRecord +
+                ", totalLoseRecord=" + totalLoseRecord +
+                ", honorScore=" + honorScore +
+                ", mostGoals=" + mostGoals +
+                ", mostAssist=" + mostAssist +
+                ", mostMom=" + mostMom +
+                '}';
+    }
 }
