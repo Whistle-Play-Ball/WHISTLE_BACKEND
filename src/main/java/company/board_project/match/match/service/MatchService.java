@@ -41,7 +41,6 @@ public class MatchService {
     private final LeagueService leagueService;
 
     private final UserRepository userRepository;
-    private final TeamRepository teamRepository;
 
     public Match createMatch(String email, MatchPostDto matchPostDto) {
         NormalMatchResponseDto normalMatchResponseDto = new NormalMatchResponseDto();
@@ -79,7 +78,6 @@ public class MatchService {
     public Match createLeagueMatch(String email, MatchPostDto matchPostDto) {
         log.info("CREATE LEAGUE_MATCH START");
         Match match = new Match();
-        try {
             // 유저가 가입된 유저인지 확인
             User user = userService.findUserByEmail(email);
 
@@ -87,24 +85,24 @@ public class MatchService {
             Team teamByUser = teamService.findTeamByUserId(user.getUserId());
             League league = leagueService.findVerifiedExistsLeagueByTeamId(teamByUser.getTeamId());
             if (matchPostDto.getLeagueName() == null) {
-                new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
 
             } else {
                 if (!matchPostDto.getLeagueName().equals(league.getLeagueName())) {
-                    new BusinessLogicException(Exceptions.LEAGUE_INFO_DIFFERENCE);
+                    throw new BusinessLogicException(Exceptions.LEAGUE_INFO_DIFFERENCE);
                 }
             }
 
             // 유저가 리그 경기를 생성할 수 있는 권한이 있는지 확인하는 로직 (리그 권한이 따로 필요한지 확인)
             TeamMemberList teamMemberListByUserId = teamService.findTeamMemberListByUserId(user.getUserId());
             if (!(teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.MANAGER) || teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.SUB_MANAGER))) {
-                new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
+                throw new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
             }
 
             // 홈팀 이름 파라미터 검증
             Team homeTeam = new Team();
             if (matchPostDto.getHomeTeamName() == null) {
-                new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
             } else {
                 homeTeam = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
             }
@@ -112,7 +110,7 @@ public class MatchService {
             // 어웨이팀 이름 파라미터 검증
             Team awayTeam = new Team();
             if (matchPostDto.getAwayTeamName() == null) {
-                new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
             } else {
                 awayTeam = teamService.findTeamByTeamName(matchPostDto.getAwayTeamName());
             }
@@ -123,9 +121,10 @@ public class MatchService {
 
             // 홈팀과 어웨이팀이 같은 리그인지 확인
             if (!homeTeamLeague.getLeagueId().equals(awayTeamLeague.getLeagueId())) {
-                new BusinessLogicException(Exceptions.BOTH_TEAMS_ARE_DIFFERENT_LEAGUE);
+                throw new BusinessLogicException(Exceptions.BOTH_TEAMS_ARE_DIFFERENT_LEAGUE);
             }
 
+        try {
             match.setHomeTeamName(homeTeam.getTeamName());
             match.setHomeTeamUniformType(homeTeam.getUniformType());
 
@@ -137,8 +136,7 @@ public class MatchService {
             matchRepository.save(match);
             log.info("CREATE LEAGUE_MATCH END");
         } catch (Exception e) {
-            log.error("SYSTEM EXCEPTION");
-            new BusinessLogicException(Exceptions.INTERNAL_SERVER_ERROR);
+            throw new BusinessLogicException(Exceptions.QUERY_ERROR);
         }
         return match;
     }
