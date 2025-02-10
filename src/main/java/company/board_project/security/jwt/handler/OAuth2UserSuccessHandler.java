@@ -2,8 +2,8 @@ package company.board_project.security.jwt.handler;
 
 import company.board_project.security.utils.RedisUtils;
 import company.board_project.security.jwt.component.JwtTokenizer;
-import company.board_project.domain.user.entity.User;
-import company.board_project.domain.user.repository.UserRepository;
+import company.board_project.user.entity.User;
+import company.board_project.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

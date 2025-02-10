@@ -6,7 +6,7 @@ import company.board_project.security.jwt.filter.JwtVerificationFilter;
 import company.board_project.security.oauth.OAuth2UserService;
 import company.board_project.security.utils.CustomAuthorityUtils;
 import company.board_project.security.utils.RedisUtils;
-import company.board_project.domain.user.repository.UserRepository;
+import company.board_project.user.repository.UserRepository;
 import company.board_project.security.jwt.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

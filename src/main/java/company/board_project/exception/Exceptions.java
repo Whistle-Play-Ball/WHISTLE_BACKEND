@@ -38,11 +38,11 @@ public enum Exceptions {
     USER_NOT_LOGIN(400, "User is not LoginResponseDto"),
     USER_NOT_FOUND(404, "User not found"),
     ID_NOT_EXIST(404, "ID is not exist"),
+    USER_HAS_NO_RIGHT(404, "User has no right"),
     USER_EXISTS(409, "User exists"),
     USERID_EXISTS(409, "User_id exists"),
     TEAMID_EXISTS(409, "Team_id exists"),
     TEAM_EXISTS(409, "Team exists"),
-    LEAGUE_EXISTS(409, "League exists"),
     MATCH_EXISTS(409, "Match exists"),
 
     /*
@@ -69,7 +69,10 @@ public enum Exceptions {
      */
     TEAM_NOT_PATCHED(403, "Team not patched"),
     TEAM_NOT_FOUND(404, "Team Not Found"),
+    TEAM_MEMBER_LIST_NOT_FOUND(404, "Team Not Found"),
     TEAM_CHECK_EXISTS(409, "Team Check exists"),
+    TEAM_PARAMETER_EXCEPTION(409, "Wrong Parameter Info"),
+    TEAM_INFO_DIFFERENCE(409, "The requested team information and the user's team information are different."),
 
     /*
      * Apply(경기 or 팀 or 리그 신청) 예외 처리
@@ -77,6 +80,15 @@ public enum Exceptions {
     APPLY_NOT_PATCHED(403, "Apply not patched"),
     APPLY_NOT_FOUND(404, "Apply Not Found"),
     APPLY_CHECK_EXISTS(409, "Apply Check exists"),
+
+    /**
+     * 리그 예외처리
+     */
+    LEAGUE_EXISTS(409, "League exists"),
+    BOTH_TEAMS_ARE_DIFFERENT_LEAGUE(409, "Both Teams are Different League"),
+    LEAGUE_INFO_DIFFERENCE(409, "The requested team information and the user's league information are different."),
+
+
 
     /*
     * 파일 업로드 예외 처리

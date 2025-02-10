@@ -6,7 +6,7 @@ import company.board_project.exception.Exceptions;
 import company.board_project.security.utils.RedisUtils;
 import company.board_project.security.jwt.component.JwtTokenizer;
 import company.board_project.security.login.dto.LoginDto;
-import company.board_project.domain.user.entity.User;
+import company.board_project.user.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

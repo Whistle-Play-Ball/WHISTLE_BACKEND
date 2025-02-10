@@ -1,8 +1,8 @@
 package company.board_project.security.oauth;
 import company.board_project.constant.AuthProvider;
 import company.board_project.security.utils.CustomAuthorityUtils;
-import company.board_project.domain.user.entity.User;
-import company.board_project.domain.user.repository.UserRepository;
+import company.board_project.user.entity.User;
+import company.board_project.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
