@@ -16,6 +16,8 @@ public enum Exceptions {
     LOGINID_EXISTS(409, "Login Id exists"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
+    SYSTEM_ERROR(500, "System Error"),
+    QUERY_ERROR(400, "Query Error"),
 
 
     /*
@@ -43,6 +45,7 @@ public enum Exceptions {
     USERID_EXISTS(409, "User_id exists"),
     TEAMID_EXISTS(409, "Team_id exists"),
     TEAM_EXISTS(409, "Team exists"),
+    USER_HAS_TEAM(409, "User has Team"),
     MATCH_EXISTS(409, "Match exists"),
 
     /*
