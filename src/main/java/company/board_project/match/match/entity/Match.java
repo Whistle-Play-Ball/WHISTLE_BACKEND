@@ -1,11 +1,11 @@
-package company.board_project.domain.match.match.entity;
+package company.board_project.match.match.entity;
 
 import company.board_project.audit.Auditable;
 import company.board_project.constant.*;
-import company.board_project.domain.league.entity.League;
-import company.board_project.domain.apply.entity.Apply;
-import company.board_project.domain.team.entity.Team;
-import company.board_project.domain.user.entity.User;
+import company.board_project.league.entity.League;
+import company.board_project.apply.entity.Apply;
+import company.board_project.team.entity.Team;
+import company.board_project.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,35 +29,36 @@ public class Match extends Auditable {
     @Column
     private String homeTeamName;
 
-    @Column
-    private String homeTeamManagerName;
-
-    @Column
-    private Integer homeTeamHonorScore;
-
-    @Column
-    private Integer homeTeamTotalWinRecord;
-
-    @Column
-    private Integer homeTeamTotalDrawRecord;
-
-    @Column
-    private Integer homeTeamTotalLoseRecord;
-
-    @Column
-    private Integer homeTeamLeagueWinRecord;
-
-    @Column
-    private Integer homeTeamLeagueDrawRecord;
-
-    @Column
-    private Integer homeTeamLeagueLoseRecord;
-
-    @Enumerated(EnumType.STRING)
-    private LevelType homeTeamLevelType;
-
-    @Enumerated(EnumType.STRING)
-    private AgeType homeTeamAgeType;
+//    teamId만 있다면 다른 정보를 가져올 수 DB에서 가져올 수 있으므로 나머지 정보는 필요하지 않다.
+//    @Column
+//    private String homeTeamManagerName;
+//
+//    @Column
+//    private Integer homeTeamHonorScore;
+//
+//    @Column
+//    private Integer homeTeamTotalWinRecord;
+//
+//    @Column
+//    private Integer homeTeamTotalDrawRecord;
+//
+//    @Column
+//    private Integer homeTeamTotalLoseRecord;
+//
+//    @Column
+//    private Integer homeTeamLeagueWinRecord;
+//
+//    @Column
+//    private Integer homeTeamLeagueDrawRecord;
+//
+//    @Column
+//    private Integer homeTeamLeagueLoseRecord;
+//
+//    @Enumerated(EnumType.STRING)
+//    private LevelType homeTeamLevelType;
+//
+//    @Enumerated(EnumType.STRING)
+//    private AgeType homeTeamAgeType;
 
     @Enumerated(EnumType.STRING)
     private UniformType homeTeamUniformType;
@@ -68,43 +69,43 @@ public class Match extends Auditable {
 
     // AWAY TEAM INFO
     @Column
-    private String awayTeamName;
-
-    @Column
-    private String awayTeamManagerName;
-
-    @Column
     private Long awayTeamUserId;
 
     @Column
     private Long awayTeamId;
 
     @Column
-    private Integer awayTeamHonorScore;
-
-    @Column
-    private Integer awayTeamTotalWinRecord;
-
-    @Column
-    private Integer awayTeamTotalDrawRecord;
-
-    @Column
-    private Integer awayTeamTotalLoseRecord;
-
-    @Column
-    private Integer awayTeamLeagueWinRecord;
-
-    @Column
-    private Integer awayTeamLeagueDrawRecord;
-
-    @Column
-    private Integer awayTeamLeagueLoseRecord;
-
-    @Enumerated(EnumType.STRING)
-    private LevelType awayTeamLevelType;
-
-    @Enumerated(EnumType.STRING)
-    private AgeType awayTeamAgeType;
+    private String awayTeamName;
+//
+//    @Column
+//    private String awayTeamManagerName;
+//
+//    @Column
+//    private Integer awayTeamHonorScore;
+//
+//    @Column
+//    private Integer awayTeamTotalWinRecord;
+//
+//    @Column
+//    private Integer awayTeamTotalDrawRecord;
+//
+//    @Column
+//    private Integer awayTeamTotalLoseRecord;
+//
+//    @Column
+//    private Integer awayTeamLeagueWinRecord;
+//
+//    @Column
+//    private Integer awayTeamLeagueDrawRecord;
+//
+//    @Column
+//    private Integer awayTeamLeagueLoseRecord;
+//
+//    @Enumerated(EnumType.STRING)
+//    private LevelType awayTeamLevelType;
+//
+//    @Enumerated(EnumType.STRING)
+//    private AgeType awayTeamAgeType;
 
     @Enumerated(EnumType.STRING)
     private UniformType awayTeamUniformType;
@@ -133,6 +134,9 @@ public class Match extends Auditable {
 
     @Column
     private String leagueName;
+
+    @Column
+    private Integer leagueRound;
 
     @Enumerated(EnumType.STRING)
     private MatchStatus matchStatus = MatchStatus.BEFORE;

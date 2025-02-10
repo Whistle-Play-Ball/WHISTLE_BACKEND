@@ -1,13 +1,15 @@
-package company.board_project.domain.match.match.dto;
+package company.board_project.match.match.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 public class MatchResponseDto {
     private Long matchId;
@@ -32,4 +34,5 @@ public class MatchResponseDto {
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
 }

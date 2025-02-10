@@ -1,6 +1,6 @@
-package company.board_project.domain.match.match.repository;
+package company.board_project.match.match.repository;
 
-import company.board_project.domain.match.match.entity.Match;
+import company.board_project.match.match.entity.Match;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

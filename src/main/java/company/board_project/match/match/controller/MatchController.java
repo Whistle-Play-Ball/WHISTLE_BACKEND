@@ -1,15 +1,13 @@
-package company.board_project.domain.match.match.controller;
+package company.board_project.match.match.controller;
 
 import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.constant.MatchType;
-import company.board_project.domain.match.match.dto.MatchListDto;
-import company.board_project.domain.match.match.dto.MatchPatchDto;
-import company.board_project.domain.match.match.dto.MatchPostDto;
-import company.board_project.domain.match.match.dto.MatchResponseDto;
-import company.board_project.domain.match.match.entity.Match;
-import company.board_project.domain.match.match.mapper.MatchMapper;
-import company.board_project.domain.match.match.service.MatchService;
+import company.board_project.match.match.dto.*;
+import company.board_project.match.match.entity.Match;
+import company.board_project.match.match.mapper.MatchMapper;
+import company.board_project.match.match.service.MatchService;
 import company.board_project.response.MultiResponseDto;
+import company.board_project.response.SingleResponseDto;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,15 +31,17 @@ public class MatchController {
     @PostMapping
     public ResponseEntity postMatch(@Validated @RequestBody MatchPostDto requestBody, @AuthenticatedUser String email) {
 
+        Match match = new Match();
         if (requestBody.getMatchType().equals(String.valueOf(MatchType.NORMAL_MATCH))) {
-            Match match = matchService.createMatch(matchMapper.matchPostDtoToMatch(requestBody), email, requestBody.getTeamId());
-            MatchResponseDto matchResponseDto = matchMapper.matchToMatchResponse(match);
-            return ResponseEntity.ok(matchResponseDto);
+            match = matchService.createMatch(email, requestBody);
+
+        } else if (requestBody.getMatchType().equals(String.valueOf(MatchType.LEAGUE))) {
+            match = matchService.createLeagueMatch(email, requestBody);
+
         } else {
-            Match match = matchService.createTournamentMatch(matchMapper.matchPostDtoToMatch(requestBody), email, requestBody.getTeamId());
-            MatchResponseDto matchResponseDto = matchMapper.matchToMatchResponse(match);
-            return ResponseEntity.ok(matchResponseDto);
+            match = matchService.createTournamentMatch(email, requestBody);
         }
+        return new ResponseEntity<>(new SingleResponseDto<>(match), HttpStatus.CREATED);
     }
 
     @GetMapping("/{matchId}")
@@ -54,7 +54,7 @@ public class MatchController {
 
     @GetMapping
     public ResponseEntity getMatches(@Positive @RequestParam(value = "page", defaultValue = "1") int page,
-                                     @Positive @RequestParam(value = "size", defaultValue = "40") int size){
+                                     @Positive @RequestParam(value = "size", defaultValue = "40") int size) {
 
         Page<Match> pageMatches = matchService.findMatches(page - 1, size);
         List<Match> matches = pageMatches.getContent();
@@ -66,7 +66,7 @@ public class MatchController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity getSearch(@RequestParam(value = "keyword",required = false) String keyword) {
+    public ResponseEntity getSearch(@RequestParam(value = "keyword", required = false) String keyword) {
         List<Match> matches = matchService.findAllSearch(keyword);
         MatchListDto matchListDto = matchMapper.matchListDtoToMatchResponse(matches);
 
@@ -74,7 +74,7 @@ public class MatchController {
     }
 
     @GetMapping("/search/username")
-    public ResponseEntity getSearchByUserName(@RequestParam(value = "name",required = false) String name) {
+    public ResponseEntity getSearchByUserName(@RequestParam(value = "name", required = false) String name) {
         List<Match> matches = matchService.findAllSearchByUserName(name);
         MatchListDto matchListDto = matchMapper.matchListDtoToMatchResponse(matches);
 
@@ -99,7 +99,7 @@ public class MatchController {
 
     @PatchMapping("/{matchId}")
     public ResponseEntity patchMatch(@RequestBody MatchPatchDto requestBody,
-                                       @PathVariable("matchId") Long matchId) {
+                                     @PathVariable("matchId") Long matchId) {
         requestBody.updateId(matchId);
         Match match = matchService.updateMatch(
                 matchMapper.matchPatchDtoToMatch(requestBody));
