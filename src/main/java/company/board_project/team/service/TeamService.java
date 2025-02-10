@@ -32,20 +32,31 @@ public class TeamService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public Team createTeamAndTeamMemberList(
+    public Team createTeam(
             Team team, String email) {
+        log.info("CREATE_TEAM START");
 
+        // 유저가 회원 가입 된 유저 인지 확인
         userService.verifiedUserByEmail(email);
 
+        // 유저 정보 조회
         User user = userService.findUserByEmail(email);
 
-        user.setTeamMemberRole(TeamMemberRole.MANAGER);
-        team.setUser(user);
-        team.setManagerName(user.getName());
+        // 유저가 팀에 가입 되어 있는지 확인
+        verifyTeamExistsByUserId(user.getUserId());
 
-        userRepository.save(user);
+        try {
+            // 팀에 유저 정보 삽입
+            user.setTeamMemberRole(TeamMemberRole.MANAGER);
+            team.setUser(user);
+            team.setManagerName(user.getName());
 
-        return teamRepository.save(team);
+            userRepository.save(user);
+            teamRepository.save(team);
+        } catch (Exception e) {
+            throw new BusinessLogicException(Exceptions.QUERY_ERROR);
+        }
+        return team;
     }
 
     public void createTeamMemberList(
@@ -221,8 +232,8 @@ public class TeamService {
         return findVerifiedTeamByUserId(userId);
     }
 
-    public List<Team> findAllTeamsByLeagueId(long leagueId) {
-        return teamRepository.findAllTeamsByLeagueId(leagueId);
+    public List<Team> findAllTeamByLeagueId(long leagueId) {
+        return teamRepository.findAllTeamByLeagueId(leagueId);
     }
 
     // 명예 점수 상위 조회
@@ -259,13 +270,10 @@ public class TeamService {
     }
 
     public Team findVerifiedTeamByUserId(long userId) {
-        Team team;
-        try {
-            team = teamRepository.findByUserId(userId);
-        } catch (NoSuchElementException ex) {
-            throw new BusinessLogicException(Exceptions.TEAM_NOT_FOUND);
-        }
-        return team;
+        Optional<Team> team = teamRepository.findByUser_UserId(userId);
+        Team findTeam = team.orElseThrow(() ->
+                new BusinessLogicException(Exceptions.TEAM_NOT_FOUND));
+        return findTeam;
     }
 
     public Team findTeamByTeamName(String teamName) {
@@ -293,17 +301,13 @@ public class TeamService {
     }
 
     public void verifyTeamExistsByUserId(long userId) {
-        Optional<Team> team = teamRepository.findById(userId);
-        if (team == null) {
-            try {
-            } catch (NoSuchElementException ex) {
-                throw new BusinessLogicException(Exceptions.TEAM_EXISTS);
-            }
+        Optional<Team> team = teamRepository.findByUser_UserId(userId);
+        if (team.isPresent()) {
+            throw new BusinessLogicException(Exceptions.TEAM_EXISTS);
         }
     }
 
     public void verifyTeamExistsByTeamName(String teamName) {
-        boolean existTeamName = false;
         Optional<Team> optionalTeam = teamRepository.findByTeamName(teamName);
         if (optionalTeam.isEmpty()) {
             throw new BusinessLogicException(Exceptions.TEAM_EXISTS);

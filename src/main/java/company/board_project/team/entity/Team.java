@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "TEAMS", indexes = {
+@Table(name = "TEAM", indexes = {
         @Index(name = "idx_team_name", columnList = "team_name")
 })
 public class Team extends Auditable {

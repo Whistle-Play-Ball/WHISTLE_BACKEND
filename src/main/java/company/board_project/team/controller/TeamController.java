@@ -32,7 +32,7 @@ public class TeamController {
     @PostMapping
     public ResponseEntity postTeam(@Valid @RequestBody TeamPostDto requestBody, @AuthenticatedUser String email) {
         log.info("email : {}", email);
-        Team team = teamService.createTeamAndTeamMemberList(teamMapper.teamPostDtoToTeam(requestBody), email);
+        Team team = teamService.createTeam(teamMapper.teamPostDtoToTeam(requestBody), email);
         TeamResponseDto teamResponseDto = teamMapper.teamToTeamResponseDto(team);
         log.info("teamResponseDto.getTeamId() : {}", teamResponseDto.getTeamId());
         log.info("teamResponseDto.getUserId() : {}", teamResponseDto.getUserId());
@@ -80,7 +80,7 @@ public class TeamController {
 
     @GetMapping("/league/{leagueId}")
     public ResponseEntity getAllTeamsByLeagueId(@PathVariable("leagueId") @Positive Long leagueId) {
-        List<Team> teams = teamService.findAllTeamsByLeagueId(leagueId);
+        List<Team> teams = teamService.findAllTeamByLeagueId(leagueId);
         TeamListDto teamListDto = teamMapper.teamListDtoToTeamResponse(teams);
 
         return new ResponseEntity<>(teamListDto, HttpStatus.OK);
