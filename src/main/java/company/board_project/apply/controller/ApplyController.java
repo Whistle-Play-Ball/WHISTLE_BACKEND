@@ -5,7 +5,6 @@ import company.board_project.apply.entity.Apply;
 import company.board_project.apply.mapper.ApplyMapper;
 import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.apply.service.ApplyService;
-import company.board_project.domain.apply.dto.*;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

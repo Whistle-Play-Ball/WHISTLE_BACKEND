@@ -6,7 +6,6 @@ import company.board_project.comment.repository.CommentRepository;
 import company.board_project.content.dto.*;
 import company.board_project.content.entity.ContentFile;
 import company.board_project.content.repository.ContentFileRepository;
-import company.board_project.domain.content.dto.*;
 import company.board_project.content.entity.Content;
 import company.board_project.user.entity.User;
 import org.mapstruct.Mapper;

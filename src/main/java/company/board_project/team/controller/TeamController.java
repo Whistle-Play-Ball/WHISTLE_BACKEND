@@ -1,7 +1,6 @@
 package company.board_project.team.controller;
 
 import company.board_project.common.resolver.AuthenticatedUser;
-import company.board_project.domain.team.dto.*;
 import company.board_project.response.MultiResponseDto;
 import company.board_project.team.entity.Team;
 import company.board_project.team.mapper.TeamMapper;

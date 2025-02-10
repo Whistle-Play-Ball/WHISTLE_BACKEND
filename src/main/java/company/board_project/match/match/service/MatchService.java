@@ -69,7 +69,7 @@ public class MatchService {
         // 검증 이상 없다면 매치 정보 등록
         match.setHomeTeamName(teamByUser.getTeamName());
         match.setHomeTeamUniformType(teamByUser.getUniformType());
-        match.setMatchType(MatchType.NORMAL_MATCH);
+        match.setMatchType(MatchType.NORMAL);
 
         matchRepository.save(match);
 

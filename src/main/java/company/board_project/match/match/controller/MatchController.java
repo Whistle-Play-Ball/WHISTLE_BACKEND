@@ -32,10 +32,10 @@ public class MatchController {
     public ResponseEntity postMatch(@Validated @RequestBody MatchPostDto requestBody, @AuthenticatedUser String email) {
 
         Match match = new Match();
-        if (requestBody.getMatchType().equals(String.valueOf(MatchType.NORMAL_MATCH))) {
+        if (requestBody.getMatchType().equals(MatchType.NORMAL)) {
             match = matchService.createMatch(email, requestBody);
 
-        } else if (requestBody.getMatchType().equals(String.valueOf(MatchType.LEAGUE))) {
+        } else if (requestBody.getMatchType().equals(MatchType.LEAGUE)) {
             match = matchService.createLeagueMatch(email, requestBody);
 
         } else {

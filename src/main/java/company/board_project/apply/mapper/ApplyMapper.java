@@ -1,7 +1,6 @@
 package company.board_project.apply.mapper;
 
 import company.board_project.apply.dto.*;
-import company.board_project.domain.apply.dto.*;
 import company.board_project.apply.entity.Apply;
 import company.board_project.league.entity.League;
 import company.board_project.match.match.entity.Match;

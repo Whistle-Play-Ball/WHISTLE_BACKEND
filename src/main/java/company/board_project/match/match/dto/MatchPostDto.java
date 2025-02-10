@@ -21,6 +21,5 @@ public class MatchPostDto {
     // 리그 정보
     private String leagueName;
     private String TournamentName;
-    @NotBlank(message = "매치 라운드를 입력 해야 합니다.")
     private int round;
 }

@@ -1,7 +1,6 @@
 package company.board_project.team.mapper;
 
 import company.board_project.apply.entity.Apply;
-import company.board_project.domain.team.dto.*;
 import company.board_project.team.entity.Team;
 import company.board_project.team.entity.TeamMemberList;
 import company.board_project.user.entity.User;

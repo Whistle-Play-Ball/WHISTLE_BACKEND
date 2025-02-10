@@ -277,7 +277,7 @@ public class TeamService {
     }
 
     public TeamMemberList findTeamMemberListByTeamId(long teamId) {
-        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByTeamId(teamId);
+        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByTeam_TeamId(teamId);
         TeamMemberList findTeamMemberList =
                 optionalTeam.orElseThrow(() ->
                         new BusinessLogicException(Exceptions.TEAM_MEMBER_LIST_NOT_FOUND));
@@ -285,7 +285,7 @@ public class TeamService {
     }
 
     public TeamMemberList findTeamMemberListByUserId(long teamId) {
-        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByUserId(teamId);
+        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByUser_UserId(teamId);
         TeamMemberList findTeamMemberList =
                 optionalTeam.orElseThrow(() ->
                         new BusinessLogicException(Exceptions.TEAM_MEMBER_LIST_NOT_FOUND));

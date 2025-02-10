@@ -2,7 +2,6 @@ package company.board_project.content.controller;
 
 import company.board_project.common.resolver.AuthenticatedUser;
 import company.board_project.content.dto.*;
-import company.board_project.domain.content.dto.*;
 import company.board_project.content.entity.Content;
 import company.board_project.content.mapper.ContentMapper;
 import company.board_project.content.repository.ContentFileRepository;
