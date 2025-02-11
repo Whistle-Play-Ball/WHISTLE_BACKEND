@@ -45,6 +45,9 @@ public class TeamService {
         // 유저가 팀에 가입 되어 있는지 확인
         verifyTeamExistsByUserId(user.getUserId());
 
+        // 팀 명 중복 확인
+        verifyTeamExistsByTeamName(team.getTeamName());
+
         try {
             // 팀에 유저 정보 삽입
             user.setTeamMemberRole(TeamMemberRole.MANAGER);
@@ -311,8 +314,8 @@ public class TeamService {
     }
 
     public void verifyTeamExistsByTeamName(String teamName) {
-        Optional<Team> optionalTeam = teamRepository.findByTeamName(teamName);
-        if (optionalTeam.isEmpty()) {
+        Optional<Team> team = teamRepository.findByTeamName(teamName);
+        if (team.isPresent()) {
             throw new BusinessLogicException(Exceptions.TEAM_EXISTS);
         }
     }
