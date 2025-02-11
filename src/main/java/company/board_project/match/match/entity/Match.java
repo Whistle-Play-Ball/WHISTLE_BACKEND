@@ -69,12 +69,6 @@ public class Match extends Auditable {
 
     // AWAY TEAM INFO
     @Column
-    private Long awayTeamUserId;
-
-    @Column
-    private Long awayTeamId;
-
-    @Column
     private String awayTeamName;
 //
 //    @Column
@@ -133,10 +127,10 @@ public class Match extends Auditable {
     private String matchRules;
 
     @Column
-    private String leagueName;
+    private Integer matchRound;
 
     @Column
-    private Integer leagueRound;
+    private String matchName;
 
     @Enumerated(EnumType.STRING)
     private MatchStatus matchStatus = MatchStatus.BEFORE;

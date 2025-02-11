@@ -1,9 +1,6 @@
 package company.board_project.match.match.mapper;
 
-import company.board_project.match.match.dto.MatchListDto;
-import company.board_project.match.match.dto.MatchPatchDto;
-import company.board_project.match.match.dto.MatchPostDto;
-import company.board_project.match.match.dto.MatchResponseDto;
+import company.board_project.match.match.dto.*;
 import company.board_project.match.match.entity.Match;
 import company.board_project.team.entity.Team;
 import company.board_project.user.entity.User;
@@ -16,6 +13,9 @@ public interface MatchMapper {
     Match matchPostDtoToMatch(MatchPostDto requestBody);
 
     Match matchPatchDtoToMatch(MatchPatchDto requestBody);
+    CreateNormalMatchResponseDto matchToCreateNormalMatchResponseDto(Match requestBody);
+    CreateLeagueMatchResponseDto matchToCreateLeagueMatchResponseDto(Match requestBody);
+    CreateTournamentMatchResponseDto matchToCreateTournamentMatchResponseDto(Match requestBody);
 
     default MatchResponseDto matchToMatchResponse(Match match){
         User user = match.getUser();

@@ -42,9 +42,8 @@ public class MatchService {
 
     private final UserRepository userRepository;
 
-    public Match createMatch(String email, MatchPostDto matchPostDto) {
+    public Match createMatch(String email, MatchPostDto matchPostDto, Match match) {
         NormalMatchResponseDto normalMatchResponseDto = new NormalMatchResponseDto();
-        Match match = new Match();
         // 유저가 가입된 유저인지 확인
         User user = userService.findUserByEmail(email);
 

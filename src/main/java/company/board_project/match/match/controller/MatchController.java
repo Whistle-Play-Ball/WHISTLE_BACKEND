@@ -33,15 +33,20 @@ public class MatchController {
 
         Match match = new Match();
         if (requestBody.getMatchType().equals(MatchType.NORMAL)) {
-            match = matchService.createMatch(email, requestBody);
+            match = matchService.createMatch(email, requestBody, matchMapper.matchPostDtoToMatch(requestBody));
+            CreateNormalMatchResponseDto createNormalMatchResponseDto = matchMapper.matchToCreateNormalMatchResponseDto(match);
+            return new ResponseEntity<>(new SingleResponseDto<>(createNormalMatchResponseDto), HttpStatus.CREATED);
 
         } else if (requestBody.getMatchType().equals(MatchType.LEAGUE)) {
             match = matchService.createLeagueMatch(email, requestBody);
+            CreateLeagueMatchResponseDto createLeagueMatchResponseDto = matchMapper.matchToCreateLeagueMatchResponseDto(match);
+            return new ResponseEntity<>(new SingleResponseDto<>(createLeagueMatchResponseDto), HttpStatus.CREATED);
 
         } else {
             match = matchService.createTournamentMatch(email, requestBody);
+            CreateTournamentMatchResponseDto createTournamentMatchResponseDto = matchMapper.matchToCreateTournamentMatchResponseDto(match);
+            return new ResponseEntity<>(new SingleResponseDto<>(createTournamentMatchResponseDto), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new SingleResponseDto<>(match), HttpStatus.CREATED);
     }
 
     @GetMapping("/{matchId}")
