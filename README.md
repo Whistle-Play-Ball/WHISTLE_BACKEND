@@ -64,17 +64,18 @@
 ### Maria DB ERD
 [Whistle Project ERD 설명](https://findthelostedhobby.tistory.com/166)
 ![img1.png](img%2Fimg1.png)
-### Redis DB 구조
+
+[//]: # (### Redis DB 구조)
 
 <div id="5"></div>
 
-## 시스템 아키텍처
+[//]: # (## 시스템 아키텍처)
 
-<div id="6"></div>
+[//]: # (<div id="6"></div>)
 
-## 기술 소개
+[//]: # (## 기술 소개)
 
-<div id="7"></div>
+[//]: # (<div id="7"></div>)
 
 ## 팀 소개
 | ![강하렴](https://avatars.githubusercontent.com/u/108250233?s=400&u=4d95286f52bc324b5a32dd231aca253297afaef8&v=4) |
