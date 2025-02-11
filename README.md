@@ -77,15 +77,14 @@
 <div id="7"></div>
 
 ## 팀 소개
-| ![강하렴](https://avatars.githubusercontent.com/u/108250233?s=400&u=4d95286f52bc324b5a32dd231aca253297afaef8&v=4) | ![조선](https://avatars.githubusercontent.com/u/77006790?v=4) |
-|:--------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------:|
-|                                   [강하렴<br >(팀장)](https://github.com/kangharyeom)                                   |                  [조선](https://github.com/kangharyeom)                  |
+| ![강하렴](https://avatars.githubusercontent.com/u/108250233?s=400&u=4d95286f52bc324b5a32dd231aca253297afaef8&v=4) |
+|:--------------------------------------------------------------------------------------------------------------:|
+|                                   [강하렴<br >(팀장)](https://github.com/kangharyeom)         |
 
 
 | <center>이름</center> |       <center>역할</center>        | <center>개발 내용</center>      |어려웠던 점과 배운 점|
 |:-------------------:|:--------------------------------:|-----------------------------|----|
 |         강하렴       |    BackEnd & FrontEnd & Infra    | - 유저 로그인, 경기 매칭, 팀 관리 API 개발 |
-|         조선         | User Interface & User Experience | - UIUX 및 반응형 웹 개발           |
 
 
 <div id="8"></div>
