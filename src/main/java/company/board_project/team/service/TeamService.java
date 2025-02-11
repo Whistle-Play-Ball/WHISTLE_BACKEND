@@ -1,8 +1,10 @@
 package company.board_project.team.service;
 
+import company.board_project.apply.entity.Apply;
 import company.board_project.constant.TeamMemberRole;
-import company.board_project.team.entity.TeamMemberList;
-import company.board_project.team.repository.TeamMemberListRepository;
+import company.board_project.team.dto.TeamResponseDto;
+import company.board_project.team.entity.TeamMemberInfo;
+import company.board_project.team.repository.TeamMemberInfoRepository;
 import company.board_project.user.repository.UserRepository;
 import company.board_project.exception.BusinessLogicException;
 import company.board_project.exception.Exceptions;
@@ -18,8 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,7 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
-    private final TeamMemberListRepository teamMemberListRepository;
+    private final TeamMemberInfoRepository teamMemberInfoRepository;
     private final UserRepository userRepository;
     private final UserService userService;
 
@@ -52,7 +54,6 @@ public class TeamService {
             // 팀에 유저 정보 삽입
             user.setTeamMemberRole(TeamMemberRole.MANAGER);
             team.setUser(user);
-            team.setManagerName(user.getName());
 
             userRepository.save(user);
             teamRepository.save(team);
@@ -62,19 +63,19 @@ public class TeamService {
         return team;
     }
 
-    public void createTeamMemberList(
-            TeamMemberList teamMemberList, long userId, long teamId) {
+    public void createTeamMemberInfo(
+            TeamMemberInfo teamMemberInfo, long userId, long teamId) {
         User user = userService.findUser(userId);
         Team team = findTeam(teamId);
 
         try {
-            teamMemberList.setUser(user);
-            teamMemberList.setTeam(team);
-            log.info("teamMemberList SERVICE [{}]", teamMemberList.toString());
+            teamMemberInfo.setUser(user);
+            teamMemberInfo.setTeam(team);
+            log.info("teamMemberInfo SERVICE [{}]", teamMemberInfo.toString());
         } catch (Exception e) {
             throw new BusinessLogicException(Exceptions.QUERY_ERROR);
         }
-        teamMemberListRepository.save(teamMemberList);
+        teamMemberInfoRepository.save(teamMemberInfo);
     }
 
     public Team updateTeam(
@@ -89,33 +90,6 @@ public class TeamService {
         Optional.ofNullable(team.getMemberCount())
                 .ifPresent(findTeam::setMemberCount);
 
-        Optional.ofNullable(team.getLeagueWinRecord())
-                .ifPresent(findTeam::setLeagueWinRecord);
-
-        Optional.ofNullable(team.getLeagueDrawRecord())
-                .ifPresent(findTeam::setLeagueDrawRecord);
-
-        Optional.ofNullable(team.getLeagueLoseRecord())
-                .ifPresent(findTeam::setLeagueLoseRecord);
-
-        Optional.ofNullable(team.getTotalWinRecord())
-                .ifPresent(findTeam::setTotalWinRecord);
-
-        Optional.ofNullable(team.getTotalDrawRecord())
-                .ifPresent(findTeam::setTotalDrawRecord);
-
-        Optional.ofNullable(team.getTotalLoseRecord())
-                .ifPresent(findTeam::setTotalLoseRecord);
-
-        Optional.ofNullable(team.getHonorScore())
-                .ifPresent(findTeam::setHonorScore);
-
-        Optional.ofNullable(team.getTeamGoals())
-                .ifPresent(findTeam::setTeamGoals);
-
-        Optional.ofNullable(team.getTeamAssist())
-                .ifPresent(findTeam::setTeamAssist);
-
         Optional.ofNullable(team.getIntroduction())
                 .ifPresent(findTeam::setIntroduction);
 
@@ -124,9 +98,6 @@ public class TeamService {
 
         Optional.ofNullable(team.getLocationType())
                 .ifPresent(findTeam::setLocationType);
-
-        Optional.ofNullable(team.getManagerName())
-                .ifPresent(findTeam::setManagerName);
 
         Optional.ofNullable(team.getSubManagerName())
                 .ifPresent(findTeam::setSubManagerName);
@@ -137,97 +108,50 @@ public class TeamService {
         return teamRepository.save(findTeam);
     }
 
-    public Team updateForMatchEnd(
-            Long homeTeamScore
-            , Long awayTeamScore
-            , Long homeTeamId
-            , Long awayTeamId
-    ) {
-        Team findHomeTeam = findVerifiedTeam(homeTeamId);
-        Team findAwayTeam = findVerifiedTeam(awayTeamId);
-        if (homeTeamScore > awayTeamScore) {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 300);
-            findHomeTeam.setTotalWinRecord(findHomeTeam.getTotalWinRecord() + 1);
+    public TeamResponseDto teamToTeamResponseDto(Team team){
 
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 10);
-            findAwayTeam.setTotalLoseRecord(findAwayTeam.getTotalLoseRecord() + 1);
+        User user = team.getUser();
+        List<Apply> applies = new ArrayList<>();
 
-//        homeTeam 패배한 경우
-        } else if (homeTeamScore < awayTeamScore) {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 10);
-            findHomeTeam.setTotalLoseRecord(findHomeTeam.getTotalLoseRecord() + 1);
+        // 총 승리 점수 + 무승부 점수 + 평판점수
+//        String honorScore =
 
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 300);
-            findAwayTeam.setTotalWinRecord(findAwayTeam.getTotalWinRecord() + 1);
-
-//        무승부인 경우
-        } else {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 100);
-            findHomeTeam.setTotalDrawRecord(findHomeTeam.getTotalDrawRecord() + 1);
-            findHomeTeam.setLeagueMatchPoints(findHomeTeam.getLeagueMatchPoints() + 1);
-
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 100);
-            findAwayTeam.setTotalDrawRecord(findAwayTeam.getTotalDrawRecord() + 1);
-
-        }
-        teamRepository.save(findHomeTeam);
-
-
-        return teamRepository.save(findAwayTeam);
-    }
-
-    public Team updateForLeagueMatchEnd(
-            Long homeTeamScore
-            , Long awayTeamScore
-            , Long homeTeamId
-            , Long awayTeamId
-    ) {
-        Team findHomeTeam = findVerifiedTeam(homeTeamId);
-        Team findAwayTeam = findVerifiedTeam(awayTeamId);
-        if (homeTeamScore > awayTeamScore) {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 300);
-            findHomeTeam.setTotalWinRecord(findHomeTeam.getTotalWinRecord() + 1);
-            findHomeTeam.setLeagueMatchCount(findHomeTeam.getLeagueMatchCount() + 1);
-            findHomeTeam.setLeagueMatchPoints(findHomeTeam.getLeagueMatchPoints() + 3);
-            findHomeTeam.setLeagueWinRecord(findHomeTeam.getLeagueWinRecord() + 1);
-
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 10);
-            findAwayTeam.setTotalLoseRecord(findAwayTeam.getTotalLoseRecord() + 1);
-            findAwayTeam.setLeagueLoseRecord(findAwayTeam.getLeagueLoseRecord() + 1);
-            findAwayTeam.setLeagueMatchCount(findAwayTeam.getLeagueMatchCount() + 1);
-
-//        homeTeam 패배한 경우
-        } else if (homeTeamScore < awayTeamScore) {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 10);
-            findHomeTeam.setTotalLoseRecord(findHomeTeam.getTotalLoseRecord() + 1);
-            findHomeTeam.setLeagueLoseRecord(findHomeTeam.getLeagueLoseRecord() + 1);
-            findHomeTeam.setLeagueMatchCount(findHomeTeam.getLeagueMatchCount() + 1);
-
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 300);
-            findAwayTeam.setTotalWinRecord(findAwayTeam.getTotalWinRecord() + 1);
-            findAwayTeam.setLeagueMatchPoints(findAwayTeam.getLeagueMatchPoints() + 3);
-            findAwayTeam.setLeagueWinRecord(findAwayTeam.getLeagueWinRecord() + 1);
-            findAwayTeam.setLeagueMatchCount(findAwayTeam.getLeagueMatchCount() + 1);
-
-//        무승부인 경우
-        } else {
-            findHomeTeam.setHonorScore(findHomeTeam.getHonorScore() + 100);
-            findHomeTeam.setTotalDrawRecord(findHomeTeam.getTotalDrawRecord() + 1);
-            findHomeTeam.setLeagueMatchPoints(findHomeTeam.getLeagueMatchPoints() + 1);
-            findHomeTeam.setLeagueDrawRecord(findHomeTeam.getLeagueDrawRecord() + 1);
-            findHomeTeam.setLeagueMatchCount(findHomeTeam.getLeagueMatchCount() + 1);
-
-            findAwayTeam.setHonorScore(findAwayTeam.getHonorScore() + 100);
-            findAwayTeam.setTotalDrawRecord(findAwayTeam.getTotalDrawRecord() + 1);
-            findAwayTeam.setLeagueMatchPoints(findAwayTeam.getLeagueMatchPoints() + 1);
-            findAwayTeam.setLeagueDrawRecord(findAwayTeam.getLeagueDrawRecord() + 1);
-            findAwayTeam.setLeagueMatchCount(findAwayTeam.getLeagueMatchCount() + 1);
-
-        }
-        teamRepository.save(findHomeTeam);
-
-
-        return teamRepository.save(findAwayTeam);
+        return TeamResponseDto.builder()
+                .userId(user.getUserId())
+                .teamId(team.getTeamId())
+//                .honorScore(team.getHonorScore())
+                .championCount(team.getChampionCount())
+                .memberCount(team.getMemberCount())
+//                .leagueMatchPoints(team.getLeagueMatchPoints())
+//                .leagueMatchCount(team.getLeagueMatchCount())
+//                .leagueWinRecord(team.getLeagueWinRecord())
+//                .leagueDrawRecord(team.getLeagueDrawRecord())
+//                .leagueLoseRecord(team.getLeagueLoseRecord())
+//                .totalMatchCount(team.getTotalMatchCount())
+//                .totalWinRecord(team.getTotalWinRecord())
+//                .totalDrawRecord(team.getTotalDrawRecord())
+//                .totalLoseRecord(team.getTotalLoseRecord())
+//                .honorScore(team.getHonorScore())
+//                .mostGoals(team.getTeamGoals())
+//                .mostAssist(team.getTeamAssist())
+                .teamName(team.getTeamName())
+                .applies(applies)
+//                .leagueWinRecord(team.getLeagueWinRecord())
+//                .leagueDrawRecord(team.getLeagueDrawRecord())
+//                .leagueLoseRecord(team.getLeagueLoseRecord())
+                .managerName(user.getName())
+//                .leagueName(team.getLeagueName())
+                .sportsType(String.valueOf(team.getSportsType()))
+                .ageType(String.valueOf(team.getAgeType()))
+                .locationType(String.valueOf(team.getLocationType()))
+                .levelType(String.valueOf(team.getLevelType()))
+                .formation(String.valueOf(team.getFormation()))
+                .uniformType(String.valueOf(team.getUniformType()))
+                .introduction(team.getIntroduction())
+                .frequency(String.valueOf(team.getFrequency()))
+                .createdAt(team.getCreatedAt())
+                .modifiedAt(team.getModifiedAt())
+                .build();
     }
 
     public Team findTeam(long teamId) {
@@ -290,20 +214,20 @@ public class TeamService {
         return findTeam;
     }
 
-    public TeamMemberList findTeamMemberListByTeamId(long teamId) {
-        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByTeam_TeamId(teamId);
-        TeamMemberList findTeamMemberList =
+    public TeamMemberInfo findTeamMemberListByTeamId(long teamId) {
+        Optional<TeamMemberInfo> optionalTeam = teamMemberInfoRepository.findByTeam_TeamId(teamId);
+        TeamMemberInfo findTeamMemberList =
                 optionalTeam.orElseThrow(() ->
                         new BusinessLogicException(Exceptions.TEAM_MEMBER_LIST_NOT_FOUND));
         return findTeamMemberList;
     }
 
-    public TeamMemberList findTeamMemberListByUserId(long teamId) {
-        Optional<TeamMemberList> optionalTeam = teamMemberListRepository.findByUser_UserId(teamId);
-        TeamMemberList findTeamMemberList =
+    public TeamMemberInfo findTeamMemberListByUserId(long teamId) {
+        Optional<TeamMemberInfo> optionalTeam = teamMemberInfoRepository.findByUser_UserId(teamId);
+        TeamMemberInfo findTeamMemberInfo =
                 optionalTeam.orElseThrow(() ->
                         new BusinessLogicException(Exceptions.TEAM_MEMBER_LIST_NOT_FOUND));
-        return findTeamMemberList;
+        return findTeamMemberInfo;
     }
 
     public void verifyTeamExistsByUserId(long userId) {

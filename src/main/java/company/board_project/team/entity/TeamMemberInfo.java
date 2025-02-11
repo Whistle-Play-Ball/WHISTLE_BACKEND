@@ -1,5 +1,6 @@
 package company.board_project.team.entity;
 
+import company.board_project.audit.Auditable;
 import company.board_project.constant.*;
 import company.board_project.apply.entity.Apply;
 import company.board_project.user.entity.User;
@@ -12,11 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "TEAM_MEMBER_LISTS")
-public class TeamMemberList {
+@Table(name = "TEAM_MEMBER_INFO")
+public class TeamMemberInfo extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long teamMemberListId;
+    private long teamMemberInfoId;
 
     @Column
     private String name;
@@ -53,8 +54,8 @@ public class TeamMemberList {
 
     @Override
     public String toString() {
-        return "TeamMemberList{" +
-                "teamMemberListId=" + teamMemberListId +
+        return "TeamMemberInfo{" +
+                "teamMemberInfoId=" + teamMemberInfoId +
                 ", name='" + name + '\'' +
                 ", position=" + position +
                 ", teamMemberRole=" + teamMemberRole +

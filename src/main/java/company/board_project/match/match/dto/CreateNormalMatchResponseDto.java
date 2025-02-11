@@ -16,7 +16,7 @@ public class CreateNormalMatchResponseDto {
     private String matchType;
     private String sportsType;
     private String locationType;
-    private String matchTime;
+    private String matchAt;
     private String matchStatus;
     private String matchAddress;
     private String matchRules;

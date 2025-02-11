@@ -43,7 +43,7 @@ public class LeagueMatchResponseDto {
     private SportsType sportsType;
     private Integer round;
     private String matchAddress;
-    private String matchTime;
+    private String matchAt;
     private String matchRules;
     private String leagueName;
     private MatchStatus matchStatus = MatchStatus.BEFORE;

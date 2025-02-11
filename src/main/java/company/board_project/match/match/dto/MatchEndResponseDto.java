@@ -19,8 +19,7 @@ public class MatchEndResponseDto {
     private Integer homeTeamScore;
     private Integer awayTeamScore;
     private String matchStatus;
-    private String matchTime;
-    private String matchDate;
+    private String matchAt;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

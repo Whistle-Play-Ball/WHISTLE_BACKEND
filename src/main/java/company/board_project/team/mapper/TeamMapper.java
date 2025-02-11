@@ -2,7 +2,7 @@ package company.board_project.team.mapper;
 
 import company.board_project.apply.entity.Apply;
 import company.board_project.team.entity.Team;
-import company.board_project.team.entity.TeamMemberList;
+import company.board_project.team.entity.TeamMemberInfo;
 import company.board_project.user.entity.User;
 import company.board_project.team.dto.*;
 import org.mapstruct.Mapper;
@@ -24,28 +24,11 @@ public interface TeamMapper {
         return TeamResponseDto.builder()
                 .userId(user.getUserId())
                 .teamId(team.getTeamId())
-                .honorScore(team.getHonorScore())
                 .championCount(team.getChampionCount())
                 .memberCount(team.getMemberCount())
-                .leagueMatchPoints(team.getLeagueMatchPoints())
-                .leagueMatchCount(team.getLeagueMatchCount())
-                .leagueWinRecord(team.getLeagueWinRecord())
-                .leagueDrawRecord(team.getLeagueDrawRecord())
-                .leagueLoseRecord(team.getLeagueLoseRecord())
-                .totalMatchCount(team.getTotalMatchCount())
-                .totalWinRecord(team.getTotalWinRecord())
-                .totalDrawRecord(team.getTotalDrawRecord())
-                .totalLoseRecord(team.getTotalLoseRecord())
-                .honorScore(team.getHonorScore())
-                .mostGoals(team.getTeamGoals())
-                .mostAssist(team.getTeamAssist())
                 .teamName(team.getTeamName())
                 .applies(applies)
-                .leagueWinRecord(team.getLeagueWinRecord())
-                .leagueDrawRecord(team.getLeagueDrawRecord())
-                .leagueLoseRecord(team.getLeagueLoseRecord())
                 .managerName(user.getName())
-                .leagueName(team.getLeagueName())
                 .sportsType(String.valueOf(team.getSportsType()))
                 .ageType(String.valueOf(team.getAgeType()))
                 .locationType(String.valueOf(team.getLocationType()))
@@ -59,7 +42,7 @@ public interface TeamMapper {
                 .build();
     }
 
-    TeamMemberList teamMemberListPostDtoToTeam(TeamMemberListPostDto requestBody);
+    TeamMemberInfo teamMemberInfoPostDtoToTeam(TeamMemberInfoPostDto requestBody);
 
     default TeamListDto teamListDtoToTeamResponse(List<Team> teams){
 

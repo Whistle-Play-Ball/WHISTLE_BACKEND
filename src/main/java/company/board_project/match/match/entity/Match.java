@@ -121,7 +121,7 @@ public class Match extends Auditable {
     private String matchAddress;
 
     @Column
-    private String matchTime;
+    private String matchAt;
 
     @Column
     private String matchRules;
@@ -139,8 +139,12 @@ public class Match extends Auditable {
     private List<Apply> applies = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    @JoinColumn(name = "HOME_TEAM_ID")
+    private Team homeTeam;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "AWAY_TEAM_ID")
+    private Team awayTeam;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "USER_ID")

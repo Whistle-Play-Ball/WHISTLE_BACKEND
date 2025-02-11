@@ -32,7 +32,7 @@ public class MatchPostDto {
     @NotNull(message = "SPORTS_TYPE을 입력 해야 합니다.")
     private SportsType sportsType;
     @NotBlank(message = "경기 시간을 입력 해야 합니다.")
-    private String matchTime;
+    private String matchAt;
     @NotBlank(message = "경기장 주소를 입력 해야 합니다.")
     private String matchAddress;
     private String matchRules;

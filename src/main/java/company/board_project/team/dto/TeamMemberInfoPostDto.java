@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TeamMemberListPostDto {
+public class TeamMemberInfoPostDto {
     private Long userId;
     private Long teamId;
     private String name;
@@ -18,7 +18,7 @@ public class TeamMemberListPostDto {
 
     @Override
     public String toString() {
-        return "TeamMemberListPostDto{" +
+        return "TeamMemberInfoPostDto{" +
                 "userId=" + userId +
                 ", teamId=" + teamId +
                 ", name='" + name + '\'' +

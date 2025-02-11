@@ -4,14 +4,10 @@ import company.board_project.constant.MatchType;
 import company.board_project.constant.TeamMemberRole;
 import company.board_project.league.entity.League;
 import company.board_project.league.service.LeagueService;
-import company.board_project.match.match.dto.LeagueMatchResponseDto;
 import company.board_project.match.match.dto.MatchPostDto;
-import company.board_project.match.match.dto.NormalMatchResponseDto;
-import company.board_project.match.match.dto.TournamentMatchResponseDto;
 import company.board_project.match.match.entity.Match;
 import company.board_project.match.match.repository.MatchRepository;
-import company.board_project.team.entity.TeamMemberList;
-import company.board_project.team.repository.TeamRepository;
+import company.board_project.team.entity.TeamMemberInfo;
 import company.board_project.exception.BusinessLogicException;
 import company.board_project.exception.Exceptions;
 import company.board_project.team.entity.Team;
@@ -26,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -39,11 +34,9 @@ public class MatchService {
     private final UserService userService;
     private final TeamService teamService;
     private final LeagueService leagueService;
-
     private final UserRepository userRepository;
 
     public Match createMatch(String email, MatchPostDto matchPostDto, Match match) {
-        NormalMatchResponseDto normalMatchResponseDto = new NormalMatchResponseDto();
         // 유저가 가입된 유저인지 확인
         User user = userService.findUserByEmail(email);
 
@@ -51,17 +44,17 @@ public class MatchService {
         Team teamByUser = teamService.findTeamByUserId(user.getUserId());
 
         // 유저가 경기를 생성할 권한이 있는지 확인 (매니저 혹은 부매니저)
-        TeamMemberList teamMemberListByUserId = teamService.findTeamMemberListByUserId(user.getUserId());
-        if (!(teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.MANAGER) || teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.SUB_MANAGER))) {
-            new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
+        TeamMemberInfo teamMemberInfoByUserId = teamService.findTeamMemberListByUserId(user.getUserId());
+        if (!(teamMemberInfoByUserId.getTeamMemberRole().equals(TeamMemberRole.MANAGER) || teamMemberInfoByUserId.getTeamMemberRole().equals(TeamMemberRole.SUB_MANAGER))) {
+            throw new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
         }
 
         // postDto에 있는 homeTeamName 정보가 존재하는지 확인
-        Team teamByPostDto = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
+        teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
 
         // 유저의 팀정보와 teamByPostDto의 팀정보가 다르면 예외 발생
         if (!matchPostDto.getHomeTeamName().equals(teamByUser.getTeamName())) {
-            new BusinessLogicException(Exceptions.TEAM_INFO_DIFFERENCE);
+            throw new BusinessLogicException(Exceptions.TEAM_INFO_DIFFERENCE);
         }
 
         // 검증 이상 없다면 매치 정보 등록
@@ -74,59 +67,60 @@ public class MatchService {
         return match;
     }
 
-    public Match createLeagueMatch(String email, MatchPostDto matchPostDto) {
+    public Match createLeagueMatch(String email, MatchPostDto matchPostDto, Match match) {
         log.info("CREATE LEAGUE_MATCH START");
-        Match match = new Match();
-            // 유저가 가입된 유저인지 확인
-            User user = userService.findUserByEmail(email);
+        // 유저가 가입된 유저인지 확인
+        User user = userService.findUserByEmail(email);
 
-            // 유저가 속한 팀이 해당 리그 소속인지 확인
-            Team teamByUser = teamService.findTeamByUserId(user.getUserId());
-            League league = leagueService.findVerifiedExistsLeagueByTeamId(teamByUser.getTeamId());
-            if (matchPostDto.getLeagueName() == null) {
-                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+        // 유저가 속한 팀이 해당 리그 소속인지 확인
+        Team teamByUser = teamService.findTeamByUserId(user.getUserId());
+        League league = leagueService.findVerifiedExistsLeagueByTeamId(teamByUser.getTeamId());
+        if (matchPostDto.getLeagueName() == null) {
+            throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
 
-            } else {
-                if (!matchPostDto.getLeagueName().equals(league.getLeagueName())) {
-                    throw new BusinessLogicException(Exceptions.LEAGUE_INFO_DIFFERENCE);
-                }
+        } else {
+            if (!matchPostDto.getLeagueName().equals(league.getLeagueName())) {
+                throw new BusinessLogicException(Exceptions.LEAGUE_INFO_DIFFERENCE);
             }
+        }
 
-            // 유저가 리그 경기를 생성할 수 있는 권한이 있는지 확인하는 로직 (리그 권한이 따로 필요한지 확인)
-            TeamMemberList teamMemberListByUserId = teamService.findTeamMemberListByUserId(user.getUserId());
-            if (!(teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.MANAGER) || teamMemberListByUserId.getTeamMemberRole().equals(TeamMemberRole.SUB_MANAGER))) {
-                throw new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
-            }
+        // 유저가 리그 경기를 생성할 수 있는 권한이 있는지 확인하는 로직 (리그 권한이 따로 필요한지 확인)
+        TeamMemberInfo teamMemberInfoByUserId = teamService.findTeamMemberListByUserId(user.getUserId());
+        if (!(teamMemberInfoByUserId.getTeamMemberRole().equals(TeamMemberRole.MANAGER) || teamMemberInfoByUserId.getTeamMemberRole().equals(TeamMemberRole.SUB_MANAGER))) {
+            throw new BusinessLogicException(Exceptions.USER_HAS_NO_RIGHT);
+        }
 
-            // 홈팀 이름 파라미터 검증
-            Team homeTeam = new Team();
-            if (matchPostDto.getHomeTeamName() == null) {
-                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
-            } else {
-                homeTeam = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
-            }
+        // 홈팀 이름 파라미터 검증
+        Team homeTeam;
+        if (matchPostDto.getHomeTeamName() == null) {
+            throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+        } else {
+            homeTeam = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
+        }
 
-            // 어웨이팀 이름 파라미터 검증
-            Team awayTeam = new Team();
-            if (matchPostDto.getAwayTeamName() == null) {
-                throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
-            } else {
-                awayTeam = teamService.findTeamByTeamName(matchPostDto.getAwayTeamName());
-            }
+        // 어웨이팀 이름 파라미터 검증
+        Team awayTeam;
+        if (matchPostDto.getAwayTeamName() == null) {
+            throw new BusinessLogicException(Exceptions.TEAM_PARAMETER_EXCEPTION);
+        } else {
+            awayTeam = teamService.findTeamByTeamName(matchPostDto.getAwayTeamName());
+        }
 
-            // 홈팀 또는 어웨이팀이 가입한 리그가 없으면 Exception 발생
-            League homeTeamLeague = leagueService.findVerifiedExistsLeagueByTeamId(homeTeam.getTeamId());
-            League awayTeamLeague = leagueService.findVerifiedExistsLeagueByTeamId(awayTeam.getTeamId());
+        // 홈팀 또는 어웨이팀이 가입한 리그가 없으면 Exception 발생
+        League homeTeamLeague = leagueService.findVerifiedExistsLeagueByTeamId(homeTeam.getTeamId());
+        League awayTeamLeague = leagueService.findVerifiedExistsLeagueByTeamId(awayTeam.getTeamId());
 
-            // 홈팀과 어웨이팀이 같은 리그인지 확인
-            if (!homeTeamLeague.getLeagueId().equals(awayTeamLeague.getLeagueId())) {
-                throw new BusinessLogicException(Exceptions.BOTH_TEAMS_ARE_DIFFERENT_LEAGUE);
-            }
+        // 홈팀과 어웨이팀이 같은 리그인지 확인
+        if (!homeTeamLeague.getLeagueId().equals(awayTeamLeague.getLeagueId())) {
+            throw new BusinessLogicException(Exceptions.BOTH_TEAMS_ARE_DIFFERENT_LEAGUE);
+        }
 
         try {
+            match.setHomeTeam(homeTeam);
             match.setHomeTeamName(homeTeam.getTeamName());
             match.setHomeTeamUniformType(homeTeam.getUniformType());
 
+            match.setAwayTeam(awayTeam);
             match.setAwayTeamName(awayTeam.getTeamName());
             match.setAwayTeamUniformType(awayTeam.getUniformType());
 
@@ -140,25 +134,32 @@ public class MatchService {
         return match;
     }
 
-    public Match createTournamentMatch(String email, MatchPostDto matchPostDto) {
-        TournamentMatchResponseDto tournamentMatchResponseDto = new TournamentMatchResponseDto();
-        Match match = new Match();
+    public Match createTournamentMatch(String email, MatchPostDto matchPostDto, Match match) {
+        // 유저가 가입된 유저인지 확인
         User user = userService.findUserByEmail(email);
-        Team team = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
 
+        // 유저가 속한 대회가 해당 대회 소속인지 확인
+        Team teamByUser = teamService.findTeamByUserId(user.getUserId());
+
+        // 유저가 대회 생성 권한이 있는지 확인
+
+
+
+        Team homeTeam = teamService.findTeamByTeamName(matchPostDto.getHomeTeamName());
+        Team awayTeam = teamService.findTeamByTeamName(matchPostDto.getAwayTeamName());
+
+        // 홈팀과 어웨이팀이 다른 대회 소속인 경우 예외 처리
+
+        match.setMatchType(match.getMatchType());
         match.setUser(user);
-        match.setTeam(team);
 
-//        matchResponseDto.setHomeTeamHonorScore(team.getHonorScore());
-//        matchResponseDto.setHomeTeamName(team.getTeamName());
-//        matchResponseDto.setHomeTeamManagerName(team.getManagerName());
-//        matchResponseDto.setHomeTeamTotalWinRecord(team.getTotalWinRecord());
-//        matchResponseDto.setHomeTeamTotalDrawRecord(team.getTotalDrawRecord());
-//        matchResponseDto.setHomeTeamTotalLoseRecord(team.getTotalLoseRecord());
-//        matchResponseDto.setHomeTeamLevelType(String.valueOf(team.getLevelType()));
-//        matchResponseDto.setHomeTeamAgeType(String.valueOf(team.getAgeType()));
-//        matchResponseDto.setHomeTeamUniformType(String.valueOf(team.getUniformType()));
-//        matchResponseDto.setMatchType(String.valueOf(match.getMatchType()));
+        match.setHomeTeam(homeTeam);
+        match.setHomeTeamName(homeTeam.getTeamName());
+        match.setHomeTeamUniformType(homeTeam.getUniformType());
+
+        match.setAwayTeam(awayTeam);
+        match.setAwayTeamName(awayTeam.getTeamName());
+        match.setAwayTeamUniformType(awayTeam.getUniformType());
 
         matchRepository.save(match);
 
@@ -178,8 +179,8 @@ public class MatchService {
         Optional.ofNullable(match.getMatchType())
                 .ifPresent(findMatch::setMatchType);
 
-        Optional.ofNullable(match.getMatchTime())
-                .ifPresent(findMatch::setMatchTime);
+        Optional.ofNullable(match.getMatchAt())
+                .ifPresent(findMatch::setMatchAt);
 
         Optional.ofNullable(match.getMatchStatus())
                 .ifPresent(findMatch::setMatchStatus);

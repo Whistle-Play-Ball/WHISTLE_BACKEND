@@ -30,8 +30,7 @@ public class MatchPatchDto {
     private String sportsType;
     private String ageType;
     private String locationType;
-    private String matchTime;
-    private String matchDate;
+    private String matchAt;
     private String levelType;
     private String matchStatus;
     private String matchRules;

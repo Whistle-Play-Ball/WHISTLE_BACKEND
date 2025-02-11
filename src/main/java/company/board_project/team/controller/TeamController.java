@@ -33,15 +33,15 @@ public class TeamController {
     public ResponseEntity postTeam(@Valid @RequestBody TeamPostDto requestBody, @AuthenticatedUser String email) {
         log.info("email : {}", email);
         Team team = teamService.createTeam(teamMapper.teamPostDtoToTeam(requestBody), email);
-        TeamResponseDto teamResponseDto = teamMapper.teamToTeamResponseDto(team);
+        TeamResponseDto teamResponseDto = teamService.teamToTeamResponseDto(team);
         log.info("teamResponseDto : {}", teamResponseDto.toString());
         log.info("email : {}", email);
 
-        TeamMemberListPostDto teamMemberListPostDto = new TeamMemberListPostDto();
-        teamMemberListPostDto.setName(teamResponseDto.getManagerName());
-        teamMemberListPostDto.setTeamMemberRole("MANAGER");
-        teamService.createTeamMemberList(teamMapper.teamMemberListPostDtoToTeam(teamMemberListPostDto),teamResponseDto.getUserId(),teamResponseDto.getTeamId());
-        log.info("teamMemberListPostDto[{}]", teamMemberListPostDto.toString());
+        TeamMemberInfoPostDto teamMemberInfoPostDto = new TeamMemberInfoPostDto();
+        teamMemberInfoPostDto.setName(teamResponseDto.getManagerName());
+        teamMemberInfoPostDto.setTeamMemberRole("MANAGER");
+        teamService.createTeamMemberInfo(teamMapper.teamMemberInfoPostDtoToTeam(teamMemberInfoPostDto),teamResponseDto.getUserId(),teamResponseDto.getTeamId());
+        log.info("teamMemberInfoPostDto[{}]", teamMemberInfoPostDto.toString());
 
         return ResponseEntity.ok(teamResponseDto);
     }

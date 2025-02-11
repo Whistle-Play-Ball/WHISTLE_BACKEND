@@ -16,6 +16,7 @@ public interface MatchMapper {
     CreateNormalMatchResponseDto matchToCreateNormalMatchResponseDto(Match requestBody);
     CreateLeagueMatchResponseDto matchToCreateLeagueMatchResponseDto(Match requestBody);
     CreateTournamentMatchResponseDto matchToCreateTournamentMatchResponseDto(Match requestBody);
+    List<Match> findByTeamIdAndMatchStatus(Long teamId, String matchStatus);
 
     default MatchResponseDto matchToMatchResponse(Match match){
         User user = match.getUser();

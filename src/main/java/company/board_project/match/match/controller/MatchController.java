@@ -38,12 +38,12 @@ public class MatchController {
             return new ResponseEntity<>(new SingleResponseDto<>(createNormalMatchResponseDto), HttpStatus.CREATED);
 
         } else if (requestBody.getMatchType().equals(MatchType.LEAGUE)) {
-            match = matchService.createLeagueMatch(email, requestBody);
+            match = matchService.createLeagueMatch(email, requestBody, matchMapper.matchPostDtoToMatch(requestBody));
             CreateLeagueMatchResponseDto createLeagueMatchResponseDto = matchMapper.matchToCreateLeagueMatchResponseDto(match);
             return new ResponseEntity<>(new SingleResponseDto<>(createLeagueMatchResponseDto), HttpStatus.CREATED);
 
         } else {
-            match = matchService.createTournamentMatch(email, requestBody);
+            match = matchService.createTournamentMatch(email, requestBody, matchMapper.matchPostDtoToMatch(requestBody));
             CreateTournamentMatchResponseDto createTournamentMatchResponseDto = matchMapper.matchToCreateTournamentMatchResponseDto(match);
             return new ResponseEntity<>(new SingleResponseDto<>(createTournamentMatchResponseDto), HttpStatus.CREATED);
         }

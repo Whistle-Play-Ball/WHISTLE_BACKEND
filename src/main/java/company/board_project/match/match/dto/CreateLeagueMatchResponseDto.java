@@ -24,7 +24,7 @@ public class CreateLeagueMatchResponseDto {
     private MatchType matchType;
     private SportsType sportsType;
     private String matchAddress;
-    private String matchTime;
+    private String matchAt;
     private String matchRules;
     private String matchName;
     private Integer matchRound;

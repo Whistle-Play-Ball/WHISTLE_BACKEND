@@ -33,41 +33,41 @@ public class Team extends Auditable {
     @Column
     private Integer memberCount;
 
-    @Column
-    private Integer leagueMatchCount;
-
-    @Column
-    private Integer leagueMatchPoints;
-
-    @Column
-    private Integer leagueWinRecord;
-
-    @Column
-    private Integer leagueDrawRecord;
-
-    @Column
-    private Integer leagueLoseRecord;
-
-    @Column
-    private Integer totalMatchCount;
-
-    @Column
-    private Integer totalWinRecord;
-
-    @Column
-    private Integer totalDrawRecord;
-
-    @Column
-    private Integer totalLoseRecord;
-
-    @Column
-    private Integer honorScore;
-
-    @Column
-    private Integer teamGoals;
-
-    @Column
-    private Integer teamAssist;
+//    @Column
+//    private Integer leagueMatchCount;
+//
+//    @Column
+//    private Integer leagueMatchPoints;
+//
+//    @Column
+//    private Integer leagueWinRecord;
+//
+//    @Column
+//    private Integer leagueDrawRecord;
+//
+//    @Column
+//    private Integer leagueLoseRecord;
+//
+//    @Column
+//    private Integer totalMatchCount;
+//
+//    @Column
+//    private Integer totalWinRecord;
+//
+//    @Column
+//    private Integer totalDrawRecord;
+//
+//    @Column
+//    private Integer totalLoseRecord;
+//
+//    @Column
+//    private Integer honorScore; // 명예 점수는 get 할때마다 쿼리로 계산해서 가져오기
+//
+//    @Column
+//    private Integer teamGoals; // 총 득점 수는 쿼리로 계산
+//
+//    @Column
+//    private Integer teamAssist; // 총 도움 수는 쿼리로 계산
 
     @Column(nullable = false)
     private String teamName;
@@ -75,11 +75,11 @@ public class Team extends Auditable {
     @Column
     private String introduction;
 
-    @Column(nullable = false)
-    private String managerName;
+//    @Column(nullable = false)
+//    private String managerName; // 매니저 이름은 변경될 수 있으므로 DB 저장하지 않고 쿼리로 호출
 
-    @Column
-    private String leagueName;
+//    @Column
+//    private String leagueName;
 
     @Column
     private String subManagerName;
@@ -124,22 +124,8 @@ public class Team extends Auditable {
                 "teamId=" + teamId +
                 ", championCount=" + championCount +
                 ", memberCount=" + memberCount +
-                ", leagueMatchCount=" + leagueMatchCount +
-                ", leagueMatchPoints=" + leagueMatchPoints +
-                ", leagueWinRecord=" + leagueWinRecord +
-                ", leagueDrawRecord=" + leagueDrawRecord +
-                ", leagueLoseRecord=" + leagueLoseRecord +
-                ", totalMatchCount=" + totalMatchCount +
-                ", totalWinRecord=" + totalWinRecord +
-                ", totalDrawRecord=" + totalDrawRecord +
-                ", totalLoseRecord=" + totalLoseRecord +
-                ", honorScore=" + honorScore +
-                ", teamGoals=" + teamGoals +
-                ", teamAssist=" + teamAssist +
                 ", teamName='" + teamName + '\'' +
                 ", introduction='" + introduction + '\'' +
-                ", managerName='" + managerName + '\'' +
-                ", leagueName='" + leagueName + '\'' +
                 ", subManagerName='" + subManagerName + '\'' +
                 ", ageType=" + ageType +
                 ", sportsType=" + sportsType +
